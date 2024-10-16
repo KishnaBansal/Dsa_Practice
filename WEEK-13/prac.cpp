@@ -1,5 +1,6 @@
 #include<iostream>
 #include<queue>
+#include<map>
 using namespace std;
 
 class Node{
@@ -9,92 +10,28 @@ public:
     Node* right;
     Node(int data) {
         this -> data = data;
-        this -> left = NULL;
-        this -> right = NULL;
+        this->left = NULL;
+        this->right = NULL;
     }
 };
 
-Node* createDisplayTree() {
-    int data;
-    cin >> data;
+Node* createTree() {
+    cout<<"Enter value of node: \n";
+    int data;cin>>data;
     if(data == -1) {
         return NULL;
     }
-    //create root
     Node* root = new Node(data);
-    // cout<<root -> data<<" ";
-    //create left sub tree
-    cout<<"Left of: "<<root -> data<<endl;
-    root -> left = createDisplayTree();
-    //create right sub tree
-    cout<<"Right of: "<<root -> data<<endl;
-    root -> right = createDisplayTree();
+
+    cout<<"For left of node "<<root->data<<endl;
+    root->left = createTree();
+    cout<<"For right of node "<<root->data<<endl;
+    root->right = createTree();
     return root;
-}
-
-void preOrder(Node* root) {
-    if(root == NULL) {
-        return;
-    }
-    //NLR
-    // N
-    cout<<root -> data <<" ";
-    // L
-    preOrder(root->left);
-    // R
-    preOrder(root -> right);
-}
-
-void inOrder(Node* root) {
-    if(root == NULL) {
-        return;
-    }
-    //LNR
-    // L
-    inOrder(root->left);
-    // N
-    cout<<root -> data <<" ";
-    // R
-    inOrder(root -> right);
-}
-
-void postOrder(Node* root) {
-    if(root == NULL) {
-        return;
-    }
-    //LRN
-    // L
-    postOrder(root->left);
-    // R
-    postOrder(root -> right);
-    // N
-    cout<<root -> data <<" ";
 }
 
 void levelOrder(Node* root) {
     queue<Node*>q;
-    if(root == NULL) {
-        return;
-    }
-    q.push(root);
-    while(!q.empty()) {
-        Node* front = q.front();
-        cout<<front->data<<" ";
-        q.pop();
-        if(front -> left != NULL) {
-            q.push(front->left);
-        }
-        if(front -> right != NULL) {
-            q.push(front->right);
-        }
-    }
-}
-
-void levelOrderLine(Node* root) {
-    queue<Node*>q;
-    if(root == NULL) {
-        return;
-    }
     q.push(root);
     q.push(NULL);
     while(!q.empty()) {
@@ -107,33 +44,114 @@ void levelOrderLine(Node* root) {
             }
         }
         else {
-            cout<<front ->data<<" ";
-            if(front -> left != NULL) {
-                q.push(front -> left);
+            cout<<front->data<<" ";
+            if(front->left != NULL) {
+                q.push(front->left);
             }
-            if(front -> right != NULL) {
-                q.push(front -> right);
+            if(front->right != NULL) {
+                q.push(front->right);
             }
         }
     }
 }
 
+void printLeftView(Node* root,vector<int>&leftView,int level) {
+    //base case
+    if(root==NULL) {
+        return;
+    }
+    //one case
+    if(level == leftView.size()) {
+        leftView.push_back(root->data);
+    }
+    //recursion
+    printLeftView(root->left,leftView,level+1);
+    printLeftView(root->right,leftView,level+1);
+}
+
+void printRightView(Node*root,vector<int>&rightView,int level) {
+    //base case
+    if(root == NULL) {
+        return;
+    }
+    //one case
+    if(level == rightView.size()) {
+        rightView.push_back(root->data);
+    }
+    //recursion
+    printRightView(root->right,rightView,level+1);
+    printRightView(root->left,rightView,level+1);
+}
+
+void topView(Node* root) {
+    map<int,int>hdToNodeMap;
+    queue<pair<Node*,int>>q;
+    q.push(make_pair(root,0));
+
+    while(!q.empty()) {
+        pair<Node*,int>temp = q.front();
+        q.pop();
+        Node* frontNode = temp.first;
+        int hd = temp.second;
+
+        if(hdToNodeMap.find(hd) == hdToNodeMap.end()) {
+            hdToNodeMap[hd] = frontNode->data;
+        }
+        if(frontNode->left != NULL) {
+            q.push(make_pair(frontNode->left,hd-1));
+        }
+        if(frontNode->right != NULL) {
+            q.push(make_pair(frontNode->right,hd+1));
+        }
+    }
+    for(auto i : hdToNodeMap) {
+        cout<<i.second<<" ";
+    }
+}
+
+void bootomView(Node* root) {
+    map<int,int>hdToNodeMap;
+    queue<pair<Node*,int>>q;
+    q.push(make_pair(root,0));
+
+    while(!q.empty()) {
+        pair<Node*,int> temp = q.front();
+        q.pop();
+        Node* frontNode = temp.first;
+        int hd = temp.second;
+        hdToNodeMap[hd] = frontNode->data;
+        if(frontNode->left != NULL) {
+            q.push(make_pair(frontNode->left,hd-1));
+        }
+        if(frontNode->right != NULL) {
+            q.push(make_pair(frontNode->right,hd+1));
+        }
+    }
+    for(auto i : hdToNodeMap) {
+        cout<<i.second<<" ";
+    }
+}
+
 int main() {
-    Node* root = createDisplayTree();
-    // cout<<root -> data << " ";
-    // cout<<endl;
-    // cout<<root -> data<<endl;
-    // cout<<"Preorder: \n";
-    // preOrder(root);
-    // cout<<endl;
-    // cout<<"Inorder: \n";
-    // inOrder(root);
-    // cout<<endl;
-    // cout<<"Postorder: \n";
-    // postOrder(root);
-    // cout<<endl;
-    // levelOrder(root);
-    // cout<<endl;
-    levelOrderLine(root);
+    Node* root = createTree();
+    levelOrder(root);
     cout<<endl;
+    vector<int>leftView;
+    printLeftView(root,leftView,0);
+    cout<<"Printing Left View: \n";
+    for(auto i : leftView) {
+        cout<<i<<" ";
+    }
+    vector<int>rightView;
+    printRightView(root,rightView,0);
+    cout<<"\nPrinting right view: \n";
+    for(auto i : rightView) {
+        cout<<i<<" ";
+    }
+    cout<<endl;
+    cout<<"Printing Top view: \n";
+    topView(root);
+    cout<<endl;
+    cout<<"Printing Bottom view: \n";
+    bootomView(root);
 }
