@@ -4,7 +4,18 @@
         "vector": "cpp",
         "xstring": "cpp",
         "system_error": "c",
-        "xlocale": "c"
+        "xlocale": "c",
+        "ostream": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "set": "cpp",
+        "xmemory": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp",
+        "stack": "cpp",
+        "queue": "cpp",
+        "deque": "cpp",
+        "utility": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
