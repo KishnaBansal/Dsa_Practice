@@ -158,7 +158,7 @@ Node* deleteFromBST(Node* root,int target) {
     //find target
     //delete target
 
-    if(root==NULL) {
+    if(root == NULL) {
         return NULL;
     }
     if(root->data == target) {
