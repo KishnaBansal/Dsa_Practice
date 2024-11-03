@@ -98,7 +98,7 @@ void heapify(int *arr,int n,int index) {
 
 void buildHeap(int arr[],int n) {
     for(int index = n/2; index > 0;index--) {
-        heapify(arr,n,index);
+        heapify(arr,n,index); 
     }
 }
 
