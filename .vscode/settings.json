@@ -15,7 +15,9 @@
         "stack": "cpp",
         "queue": "cpp",
         "deque": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "array": "cpp",
+        "span": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
