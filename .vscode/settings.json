@@ -17,7 +17,8 @@
         "deque": "cpp",
         "utility": "cpp",
         "array": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "unordered_map": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
